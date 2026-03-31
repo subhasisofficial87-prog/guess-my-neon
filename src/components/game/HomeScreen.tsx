@@ -1,8 +1,9 @@
 import { motion } from "framer-motion";
-import { Play, HelpCircle, Trophy } from "lucide-react";
+import { Play, HelpCircle, Trophy, Users } from "lucide-react";
 
 interface HomeScreenProps {
   onStart: () => void;
+  onMultiplayer: () => void;
   onHowToPlay: () => void;
   onHighScores: () => void;
 }
@@ -18,7 +19,7 @@ const FloatingNumber = ({ children, delay, x, y }: { children: string; delay: nu
   </motion.span>
 );
 
-export default function HomeScreen({ onStart, onHowToPlay, onHighScores }: HomeScreenProps) {
+export default function HomeScreen({ onStart, onMultiplayer, onHowToPlay, onHighScores }: HomeScreenProps) {
   return (
     <div className="relative flex flex-col items-center justify-center min-h-screen px-4 overflow-hidden">
       <FloatingNumber delay={0} x="10%" y="15%">7</FloatingNumber>
@@ -52,7 +53,17 @@ export default function HomeScreen({ onStart, onHowToPlay, onHighScores }: HomeS
             className="flex items-center gap-3 px-10 py-4 rounded-xl font-display font-bold text-lg bg-primary text-primary-foreground neon-glow-cyan transition-all"
           >
             <Play className="w-5 h-5" />
-            Start New Game
+            Solo Game
+          </motion.button>
+
+          <motion.button
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            onClick={onMultiplayer}
+            className="flex items-center gap-3 px-10 py-4 rounded-xl font-display font-bold text-lg bg-secondary text-secondary-foreground neon-glow-pink transition-all"
+          >
+            <Users className="w-5 h-5" />
+            2 Player Mode
           </motion.button>
 
           <div className="flex gap-3 mt-4">

@@ -9,9 +9,10 @@ interface GameScreenProps {
   onWin: (attempts: number) => void;
   onReset: () => void;
   onHome: () => void;
+  playerLabel?: string;
 }
 
-export default function GameScreen({ settings, secretNumber, onWin, onReset, onHome }: GameScreenProps) {
+export default function GameScreen({ settings, secretNumber, onWin, onReset, onHome, playerLabel }: GameScreenProps) {
   const [guess, setGuess] = useState("");
   const [history, setHistory] = useState<GuessEntry[]>([]);
   const [shake, setShake] = useState(false);
@@ -74,12 +75,21 @@ export default function GameScreen({ settings, secretNumber, onWin, onReset, onH
         <button onClick={onHome} className="text-muted-foreground hover:text-foreground transition-colors">
           <Home className="w-5 h-5" />
         </button>
-        <div className="font-display text-sm neon-text-cyan">
-          Attempts: {history.length}
+        <div className="flex items-center gap-4">
+          {playerLabel && (
+            <span className="px-3 py-1 rounded-full bg-secondary/20 text-secondary font-display text-xs font-bold">
+              {playerLabel}
+            </span>
+          )}
+          <div className="font-display text-sm neon-text-cyan">
+            Attempts: {history.length}
+          </div>
         </div>
-        <button onClick={onReset} className="text-muted-foreground hover:text-foreground transition-colors">
-          <RotateCcw className="w-5 h-5" />
-        </button>
+        {!playerLabel ? (
+          <button onClick={onReset} className="text-muted-foreground hover:text-foreground transition-colors">
+            <RotateCcw className="w-5 h-5" />
+          </button>
+        ) : <div className="w-5" />}
       </div>
 
       {/* Range display */}
@@ -109,7 +119,7 @@ export default function GameScreen({ settings, secretNumber, onWin, onReset, onH
           onChange={(e) => setGuess(e.target.value)}
           onKeyDown={handleKeyDown}
           placeholder="Enter your guess..."
-          className="flex-1 px-6 py-4 rounded-xl bg-input border-2 border-border text-foreground font-display text-xl text-center focus:outline-none focus:border-primary focus:neon-glow-cyan transition-all placeholder:text-muted-foreground/50"
+          className="flex-1 px-6 py-4 rounded-xl bg-input border-2 border-border text-foreground font-display text-xl text-center focus:outline-none focus:border-primary transition-all placeholder:text-muted-foreground/50"
           min={settings.min}
           max={settings.max}
         />
