@@ -21,6 +21,7 @@ export default function MultiplayerSetup({ onStart, onBack }: MultiplayerSetupPr
   const [p1Name, setP1Name] = useState("Player 1");
   const [p2Name, setP2Name] = useState("Player 2");
   const [firstPlayer, setFirstPlayer] = useState<1 | 2>(1);
+  const [numberMode, setNumberMode] = useState<NumberMode>("random");
   const [difficulty, setDifficulty] = useState<Difficulty>("medium");
   const [customMin, setCustomMin] = useState(1);
   const [customMax, setCustomMax] = useState(200);
@@ -34,10 +35,10 @@ export default function MultiplayerSetup({ onStart, onBack }: MultiplayerSetupPr
       const min = Math.min(customMin, customMax);
       const max = Math.max(customMin, customMax);
       if (max - min < 1) return;
-      onStart({ difficulty, min, max }, name1, name2, firstPlayer);
+      onStart({ difficulty, min, max }, name1, name2, firstPlayer, numberMode);
     } else {
       const range = DIFFICULTY_RANGES[difficulty];
-      onStart({ difficulty, ...range }, name1, name2, firstPlayer);
+      onStart({ difficulty, ...range }, name1, name2, firstPlayer, numberMode);
     }
   };
 
