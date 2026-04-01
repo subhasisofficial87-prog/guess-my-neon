@@ -1,10 +1,12 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { Users, ArrowRightLeft, Pencil } from "lucide-react";
+import { Users, ArrowRightLeft, Pencil, Shuffle, UserCheck } from "lucide-react";
 import { Difficulty, DIFFICULTY_RANGES, GameSettings } from "@/lib/gameTypes";
 
+export type NumberMode = "random" | "players-choose";
+
 interface MultiplayerSetupProps {
-  onStart: (settings: GameSettings, p1Name: string, p2Name: string, firstPlayer: 1 | 2) => void;
+  onStart: (settings: GameSettings, p1Name: string, p2Name: string, firstPlayer: 1 | 2, numberMode: NumberMode) => void;
   onBack: () => void;
 }
 
