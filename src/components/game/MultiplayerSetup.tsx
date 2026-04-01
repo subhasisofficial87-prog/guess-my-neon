@@ -1,10 +1,12 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { Users, ArrowRightLeft, Pencil } from "lucide-react";
+import { Users, ArrowRightLeft, Pencil, Shuffle, UserCheck } from "lucide-react";
 import { Difficulty, DIFFICULTY_RANGES, GameSettings } from "@/lib/gameTypes";
 
+export type NumberMode = "random" | "players-choose";
+
 interface MultiplayerSetupProps {
-  onStart: (settings: GameSettings, p1Name: string, p2Name: string, firstPlayer: 1 | 2) => void;
+  onStart: (settings: GameSettings, p1Name: string, p2Name: string, firstPlayer: 1 | 2, numberMode: NumberMode) => void;
   onBack: () => void;
 }
 
@@ -19,6 +21,7 @@ export default function MultiplayerSetup({ onStart, onBack }: MultiplayerSetupPr
   const [p1Name, setP1Name] = useState("Player 1");
   const [p2Name, setP2Name] = useState("Player 2");
   const [firstPlayer, setFirstPlayer] = useState<1 | 2>(1);
+  const [numberMode, setNumberMode] = useState<NumberMode>("random");
   const [difficulty, setDifficulty] = useState<Difficulty>("medium");
   const [customMin, setCustomMin] = useState(1);
   const [customMax, setCustomMax] = useState(200);
@@ -32,10 +35,10 @@ export default function MultiplayerSetup({ onStart, onBack }: MultiplayerSetupPr
       const min = Math.min(customMin, customMax);
       const max = Math.max(customMin, customMax);
       if (max - min < 1) return;
-      onStart({ difficulty, min, max }, name1, name2, firstPlayer);
+      onStart({ difficulty, min, max }, name1, name2, firstPlayer, numberMode);
     } else {
       const range = DIFFICULTY_RANGES[difficulty];
-      onStart({ difficulty, ...range }, name1, name2, firstPlayer);
+      onStart({ difficulty, ...range }, name1, name2, firstPlayer, numberMode);
     }
   };
 
@@ -104,7 +107,40 @@ export default function MultiplayerSetup({ onStart, onBack }: MultiplayerSetupPr
           </div>
         </div>
 
-        {/* Difficulty */}
+        {/* Number Mode */}
+        <div className="mb-6">
+          <div className="text-sm text-muted-foreground font-body mb-2 flex items-center gap-1">
+            Secret Number
+          </div>
+          <div className="grid grid-cols-2 gap-3">
+            <button
+              onClick={() => setNumberMode("random")}
+              className={`py-2.5 px-3 rounded-xl font-display text-sm font-bold border transition-all flex items-center justify-center gap-1.5 ${
+                numberMode === "random"
+                  ? "border-primary neon-glow-cyan bg-primary/10 text-foreground"
+                  : "border-border text-muted-foreground hover:border-muted-foreground"
+              }`}
+            >
+              <Shuffle className="w-3.5 h-3.5" /> Random
+            </button>
+            <button
+              onClick={() => setNumberMode("players-choose")}
+              className={`py-2.5 px-3 rounded-xl font-display text-sm font-bold border transition-all flex items-center justify-center gap-1.5 ${
+                numberMode === "players-choose"
+                  ? "border-primary neon-glow-cyan bg-primary/10 text-foreground"
+                  : "border-border text-muted-foreground hover:border-muted-foreground"
+              }`}
+            >
+              <UserCheck className="w-3.5 h-3.5" /> Players Choose
+            </button>
+          </div>
+          {numberMode === "players-choose" && (
+            <p className="text-xs text-muted-foreground/60 font-body mt-2">
+              Each player picks a secret number for the other to guess
+            </p>
+          )}
+        </div>
+
         <div className="mb-6">
           <div className="text-sm text-muted-foreground font-body mb-2">Difficulty</div>
           <div className="grid grid-cols-2 gap-3">
