@@ -5,7 +5,9 @@ import { GameSettings, GuessEntry } from "@/lib/gameTypes";
 
 interface MultiplayerGameScreenProps {
   settings: GameSettings;
-  secretNumber: number;
+  /** In "random" mode both are the same; in "players-choose" each is the other player's secret */
+  p1Secret: number;
+  p2Secret: number;
   p1Name: string;
   p2Name: string;
   firstPlayer: 1 | 2;
@@ -16,7 +18,7 @@ interface MultiplayerGameScreenProps {
 }
 
 export default function MultiplayerGameScreen({
-  settings, secretNumber, p1Name, p2Name, firstPlayer, p1Wins, p2Wins, onWin, onHome,
+  settings, p1Secret, p2Secret, p1Name, p2Name, firstPlayer, p1Wins, p2Wins, onWin, onHome,
 }: MultiplayerGameScreenProps) {
   const [guess, setGuess] = useState("");
   const [p1History, setP1History] = useState<GuessEntry[]>([]);
@@ -31,6 +33,8 @@ export default function MultiplayerGameScreen({
 
   const currentName = currentPlayer === 1 ? p1Name : p2Name;
   const currentHistory = currentPlayer === 1 ? p1History : p2History;
+  // P1 guesses p1Secret (which is p2's chosen number or the random number)
+  const currentTarget = currentPlayer === 1 ? p1Secret : p2Secret;
 
   const makeGuess = useCallback(() => {
     const num = parseInt(guess);
@@ -39,14 +43,13 @@ export default function MultiplayerGameScreen({
       setTimeout(() => setShake(false), 500);
       return;
     }
-    // Check duplicates in current player's history
     if (currentHistory.some(h => h.value === num)) {
       setShake(true);
       setTimeout(() => setShake(false), 500);
       return;
     }
 
-    const result: GuessEntry["result"] = num === secretNumber ? "correct" : num < secretNumber ? "low" : "high";
+    const result: GuessEntry["result"] = num === currentTarget ? "correct" : num < currentTarget ? "low" : "high";
     const entry: GuessEntry = { value: num, result };
 
     if (currentPlayer === 1) {
@@ -72,7 +75,7 @@ export default function MultiplayerGameScreen({
       p1ListRef.current?.scrollTo({ top: p1ListRef.current.scrollHeight, behavior: "smooth" });
       p2ListRef.current?.scrollTo({ top: p2ListRef.current.scrollHeight, behavior: "smooth" });
     }, 50);
-  }, [guess, currentHistory, p1History, p2History, secretNumber, settings, currentPlayer, onWin]);
+  }, [guess, currentHistory, p1History, p2History, currentTarget, settings, currentPlayer, onWin]);
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
     if (e.key === "Enter") makeGuess();
@@ -127,7 +130,6 @@ export default function MultiplayerGameScreen({
 
   return (
     <div className="flex flex-col items-center min-h-screen px-4 py-6">
-      {/* Top bar */}
       <div className="w-full max-w-lg flex justify-between items-center mb-4">
         <button onClick={onHome} className="text-muted-foreground hover:text-foreground transition-colors">
           <Home className="w-5 h-5" />
@@ -138,7 +140,6 @@ export default function MultiplayerGameScreen({
         <div className="w-5" />
       </div>
 
-      {/* Range */}
       <motion.div
         initial={{ opacity: 0, y: -10 }}
         animate={{ opacity: 1, y: 0 }}
@@ -152,7 +153,6 @@ export default function MultiplayerGameScreen({
         </p>
       </motion.div>
 
-      {/* Current turn indicator */}
       <motion.div
         key={currentPlayer}
         initial={{ opacity: 0, y: -5 }}
@@ -163,7 +163,6 @@ export default function MultiplayerGameScreen({
         <span className="text-muted-foreground font-body text-sm ml-1">— your turn!</span>
       </motion.div>
 
-      {/* Input */}
       <motion.div
         animate={shake ? { x: [-10, 10, -10, 10, 0] } : {}}
         transition={{ duration: 0.4 }}
@@ -190,7 +189,6 @@ export default function MultiplayerGameScreen({
         </motion.button>
       </motion.div>
 
-      {/* Two columns */}
       <div className="w-full max-w-lg flex gap-3 flex-1">
         {renderColumn(p1Name, p1History, currentPlayer === 1, p1Wins, p1ListRef)}
         {renderColumn(p2Name, p2History, currentPlayer === 2, p2Wins, p2ListRef)}
