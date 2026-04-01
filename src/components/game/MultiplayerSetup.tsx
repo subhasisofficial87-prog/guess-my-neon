@@ -107,7 +107,40 @@ export default function MultiplayerSetup({ onStart, onBack }: MultiplayerSetupPr
           </div>
         </div>
 
-        {/* Difficulty */}
+        {/* Number Mode */}
+        <div className="mb-6">
+          <div className="text-sm text-muted-foreground font-body mb-2 flex items-center gap-1">
+            Secret Number
+          </div>
+          <div className="grid grid-cols-2 gap-3">
+            <button
+              onClick={() => setNumberMode("random")}
+              className={`py-2.5 px-3 rounded-xl font-display text-sm font-bold border transition-all flex items-center justify-center gap-1.5 ${
+                numberMode === "random"
+                  ? "border-primary neon-glow-cyan bg-primary/10 text-foreground"
+                  : "border-border text-muted-foreground hover:border-muted-foreground"
+              }`}
+            >
+              <Shuffle className="w-3.5 h-3.5" /> Random
+            </button>
+            <button
+              onClick={() => setNumberMode("players-choose")}
+              className={`py-2.5 px-3 rounded-xl font-display text-sm font-bold border transition-all flex items-center justify-center gap-1.5 ${
+                numberMode === "players-choose"
+                  ? "border-primary neon-glow-cyan bg-primary/10 text-foreground"
+                  : "border-border text-muted-foreground hover:border-muted-foreground"
+              }`}
+            >
+              <UserCheck className="w-3.5 h-3.5" /> Players Choose
+            </button>
+          </div>
+          {numberMode === "players-choose" && (
+            <p className="text-xs text-muted-foreground/60 font-body mt-2">
+              Each player picks a secret number for the other to guess
+            </p>
+          )}
+        </div>
+
         <div className="mb-6">
           <div className="text-sm text-muted-foreground font-body mb-2">Difficulty</div>
           <div className="grid grid-cols-2 gap-3">
