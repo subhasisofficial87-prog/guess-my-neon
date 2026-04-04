@@ -60,15 +60,25 @@ export default function Index() {
   const handleWin = useCallback((attempts: number) => {
     setWinAttempts(attempts);
     if (settings) {
+      // Save locally always
       saveHighScore({
         difficulty: settings.difficulty,
         range: `${settings.min}–${settings.max}`,
         attempts,
         date: new Date().toLocaleDateString(),
       });
+      // Save to cloud if logged in
+      if (user) {
+        supabase.from("high_scores").insert({
+          user_id: user.id,
+          difficulty: settings.difficulty,
+          range: `${settings.min}–${settings.max}`,
+          attempts,
+        }).then(() => {});
+      }
     }
     setScreen("won");
-  }, [settings]);
+  }, [settings, user]);
 
   const resetGame = useCallback(() => {
     if (settings) startGame(settings);
