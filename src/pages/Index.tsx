@@ -11,6 +11,8 @@ import MultiplayerResults from "@/components/game/MultiplayerResults";
 import SetNumberScreen from "@/components/game/SetNumberScreen";
 import HandoffScreen from "@/components/game/HandoffScreen";
 import { GameSettings, GuessEntry, saveHighScore } from "@/lib/gameTypes";
+import { useAuth } from "@/hooks/useAuth";
+import { supabase } from "@/integrations/supabase/client";
 import { type NumberMode } from "@/components/game/MultiplayerSetup";
 
 type Screen =
