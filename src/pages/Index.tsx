@@ -21,6 +21,7 @@ type Screen =
   | "mp-p1-set" | "mp-handoff-to-p2-set" | "mp-p2-set" | "mp-handoff-to-game";
 
 export default function Index() {
+  const { user } = useAuth();
   const [screen, setScreen] = useState<Screen>("home");
   const [settingsOpen, setSettingsOpen] = useState(false);
   const [howToPlayOpen, setHowToPlayOpen] = useState(false);
