@@ -1,5 +1,7 @@
 import { motion } from "framer-motion";
-import { Play, HelpCircle, Trophy, Users } from "lucide-react";
+import { Play, HelpCircle, Trophy, Users, LogIn, LogOut, User } from "lucide-react";
+import { useAuth } from "@/hooks/useAuth";
+import { useNavigate } from "react-router-dom";
 
 interface HomeScreenProps {
   onStart: () => void;
@@ -20,6 +22,9 @@ const FloatingNumber = ({ children, delay, x, y }: { children: string; delay: nu
 );
 
 export default function HomeScreen({ onStart, onMultiplayer, onHowToPlay, onHighScores }: HomeScreenProps) {
+  const { user, displayName, signOut, loading } = useAuth();
+  const navigate = useNavigate();
+
   return (
     <div className="relative flex flex-col items-center justify-center min-h-screen px-4 overflow-hidden">
       <FloatingNumber delay={0} x="10%" y="15%">7</FloatingNumber>
@@ -27,6 +32,39 @@ export default function HomeScreen({ onStart, onMultiplayer, onHowToPlay, onHigh
       <FloatingNumber delay={1} x="5%" y="70%">99</FloatingNumber>
       <FloatingNumber delay={1.5} x="85%" y="65%">13</FloatingNumber>
       <FloatingNumber delay={2} x="50%" y="80%">?</FloatingNumber>
+
+      {/* Auth status bar */}
+      <div className="absolute top-4 right-4 z-20">
+        {!loading && (
+          user ? (
+            <div className="flex items-center gap-3">
+              <span className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-muted/50 font-body text-sm text-foreground">
+                <User className="w-3.5 h-3.5 text-primary" />
+                {displayName || "Player"}
+              </span>
+              <motion.button
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                onClick={signOut}
+                className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-muted/50 font-body text-sm text-muted-foreground hover:text-foreground transition-colors"
+              >
+                <LogOut className="w-3.5 h-3.5" />
+                Logout
+              </motion.button>
+            </div>
+          ) : (
+            <motion.button
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              onClick={() => navigate("/auth")}
+              className="flex items-center gap-2 px-4 py-2 rounded-full bg-primary/20 font-body text-sm text-primary hover:bg-primary/30 transition-colors"
+            >
+              <LogIn className="w-3.5 h-3.5" />
+              Login
+            </motion.button>
+          )
+        )}
+      </div>
 
       <motion.div
         initial={{ opacity: 0, y: 30 }}
@@ -86,7 +124,9 @@ export default function HomeScreen({ onStart, onMultiplayer, onHowToPlay, onHigh
                 <Trophy className="w-4 h-4" />
                 High Scores
               </span>
-              <span className="text-xs text-muted-foreground/60">(Login to save your score)</span>
+              {!user && (
+                <span className="text-xs text-muted-foreground/60">(Login to save your score)</span>
+              )}
             </motion.button>
           </div>
         </div>

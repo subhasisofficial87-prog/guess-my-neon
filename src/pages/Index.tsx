@@ -11,6 +11,8 @@ import MultiplayerResults from "@/components/game/MultiplayerResults";
 import SetNumberScreen from "@/components/game/SetNumberScreen";
 import HandoffScreen from "@/components/game/HandoffScreen";
 import { GameSettings, GuessEntry, saveHighScore } from "@/lib/gameTypes";
+import { useAuth } from "@/hooks/useAuth";
+import { supabase } from "@/integrations/supabase/client";
 import { type NumberMode } from "@/components/game/MultiplayerSetup";
 
 type Screen =
@@ -19,6 +21,7 @@ type Screen =
   | "mp-p1-set" | "mp-handoff-to-p2-set" | "mp-p2-set" | "mp-handoff-to-game";
 
 export default function Index() {
+  const { user } = useAuth();
   const [screen, setScreen] = useState<Screen>("home");
   const [settingsOpen, setSettingsOpen] = useState(false);
   const [howToPlayOpen, setHowToPlayOpen] = useState(false);
@@ -57,15 +60,25 @@ export default function Index() {
   const handleWin = useCallback((attempts: number) => {
     setWinAttempts(attempts);
     if (settings) {
+      // Save locally always
       saveHighScore({
         difficulty: settings.difficulty,
         range: `${settings.min}–${settings.max}`,
         attempts,
         date: new Date().toLocaleDateString(),
       });
+      // Save to cloud if logged in
+      if (user) {
+        supabase.from("high_scores").insert({
+          user_id: user.id,
+          difficulty: settings.difficulty,
+          range: `${settings.min}–${settings.max}`,
+          attempts,
+        }).then(() => {});
+      }
     }
     setScreen("won");
-  }, [settings]);
+  }, [settings, user]);
 
   const resetGame = useCallback(() => {
     if (settings) startGame(settings);
