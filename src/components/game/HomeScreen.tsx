@@ -80,10 +80,13 @@ export default function HomeScreen({ onStart, onMultiplayer, onHowToPlay, onHigh
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
               onClick={onHighScores}
-              className="flex items-center gap-2 px-6 py-3 rounded-xl font-body font-medium bg-muted text-muted-foreground hover:text-foreground transition-colors"
+              className="flex flex-col items-center gap-1 px-6 py-3 rounded-xl font-body font-medium bg-muted text-muted-foreground hover:text-foreground transition-colors"
             >
-              <Trophy className="w-4 h-4" />
-              High Scores
+              <span className="flex items-center gap-2">
+                <Trophy className="w-4 h-4" />
+                High Scores
+              </span>
+              <span className="text-xs text-muted-foreground/60">(Login to save your score)</span>
             </motion.button>
           </div>
         </div>
