@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { Play, HelpCircle, Trophy, Users, LogIn, LogOut, User } from "lucide-react";
+import { Play, HelpCircle, Trophy, Users, LogIn, LogOut, User, Lock } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
 import { useNavigate } from "react-router-dom";
 
@@ -104,6 +104,16 @@ export default function HomeScreen({ onStart, onMultiplayer, onHowToPlay, onHigh
             2 Player Mode
           </motion.button>
 
+          <motion.button
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            onClick={() => navigate("/crack-the-code")}
+            className="flex items-center gap-3 px-10 py-4 rounded-xl font-display font-bold text-lg transition-all"
+            style={{ background: "hsl(320, 100%, 60%)", color: "white", boxShadow: "0 0 15px hsl(320 100% 60% / 0.5)" }}
+          >
+            <Lock className="w-5 h-5" />
+            Crack the Code ❤️
+          </motion.button>
           <div className="flex gap-3 mt-4">
             <motion.button
               whileHover={{ scale: 1.05 }}
