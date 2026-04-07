@@ -1,19 +1,32 @@
 import { useState, useCallback } from "react";
 import { motion } from "framer-motion";
-import { Heart, Cpu, Users, Home, ChevronLeft, ChevronRight } from "lucide-react";
+import { Cpu, Users, Swords, Home, ChevronLeft, ChevronRight } from "lucide-react";
 import { generateCode } from "@/lib/crackTheCode";
 import CTCGamePlay from "@/components/crackthecode/CTCGamePlay";
 import CTCSetCode from "@/components/crackthecode/CTCSetCode";
 import CTCPassPhone from "@/components/crackthecode/CTCPassPhone";
+import CTCMultiplayerGame from "@/components/crackthecode/CTCMultiplayerGame";
 import { useNavigate } from "react-router-dom";
 
-type Screen = "menu" | "solo" | "couple-set" | "couple-pass" | "couple-play";
+type Screen =
+  | "menu"
+  | "solo"
+  | "couple-set"
+  | "couple-pass"
+  | "couple-play"
+  | "multi-p1-set"
+  | "multi-pass-p2"
+  | "multi-p2-set"
+  | "multi-pass-play"
+  | "multi-play";
 
 export default function CrackTheCode() {
   const navigate = useNavigate();
   const [screen, setScreen] = useState<Screen>("menu");
   const [codeLength, setCodeLength] = useState(4);
   const [secretCode, setSecretCode] = useState<number[]>([]);
+  const [p1Code, setP1Code] = useState<number[]>([]);
+  const [p2Code, setP2Code] = useState<number[]>([]);
   const [p1Name, setP1Name] = useState("Player 1");
   const [p2Name, setP2Name] = useState("Player 2");
 
@@ -26,6 +39,10 @@ export default function CrackTheCode() {
     setScreen("couple-set");
   }, []);
 
+  const startMultiplayer = useCallback(() => {
+    setScreen("multi-p1-set");
+  }, []);
+
   const handleCodeSet = useCallback((code: number[]) => {
     setSecretCode(code);
     setScreen("couple-pass");
@@ -35,6 +52,7 @@ export default function CrackTheCode() {
     setScreen("menu");
   }, []);
 
+  // Solo
   if (screen === "solo") {
     return (
       <CTCGamePlay
@@ -47,26 +65,13 @@ export default function CrackTheCode() {
     );
   }
 
+  // Couple flow
   if (screen === "couple-set") {
-    return (
-      <CTCSetCode
-        playerName={p1Name}
-        codeLength={codeLength}
-        onSubmit={handleCodeSet}
-      />
-    );
+    return <CTCSetCode playerName={p1Name} codeLength={codeLength} onSubmit={handleCodeSet} />;
   }
-
   if (screen === "couple-pass") {
-    return (
-      <CTCPassPhone
-        nextPlayer={p2Name}
-        message="Time to crack the code! 🔐"
-        onReady={() => setScreen("couple-play")}
-      />
-    );
+    return <CTCPassPhone nextPlayer={p2Name} message="Time to crack the code! 🔐" onReady={() => setScreen("couple-play")} />;
   }
-
   if (screen === "couple-play") {
     return (
       <CTCGamePlay
@@ -80,10 +85,49 @@ export default function CrackTheCode() {
     );
   }
 
+  // Multiplayer flow: P1 sets code → pass → P2 sets code → pass → play
+  if (screen === "multi-p1-set") {
+    return (
+      <CTCSetCode
+        playerName={p1Name}
+        codeLength={codeLength}
+        onSubmit={(code) => { setP1Code(code); setScreen("multi-pass-p2"); }}
+      />
+    );
+  }
+  if (screen === "multi-pass-p2") {
+    return <CTCPassPhone nextPlayer={p2Name} message="Now set YOUR secret code! 🔐" onReady={() => setScreen("multi-p2-set")} />;
+  }
+  if (screen === "multi-p2-set") {
+    return (
+      <CTCSetCode
+        playerName={p2Name}
+        codeLength={codeLength}
+        onSubmit={(code) => { setP2Code(code); setScreen("multi-pass-play"); }}
+      />
+    );
+  }
+  if (screen === "multi-pass-play") {
+    return <CTCPassPhone nextPlayer={p1Name} message="Let the battle begin! ⚔️🔥" onReady={() => setScreen("multi-play")} />;
+  }
+  if (screen === "multi-play") {
+    return (
+      <CTCMultiplayerGame
+        key={p1Code.join("") + p2Code.join("")}
+        p1Name={p1Name}
+        p2Name={p2Name}
+        p1Code={p1Code}
+        p2Code={p2Code}
+        codeLength={codeLength}
+        onHome={goHome}
+        onPlayAgain={startMultiplayer}
+      />
+    );
+  }
+
   // Menu screen
   return (
     <div className="flex flex-col items-center justify-center min-h-screen px-4 overflow-hidden relative">
-      {/* Floating hearts */}
       {["❤️", "🔐", "💕", "🔥", "💖"].map((emoji, i) => (
         <motion.span
           key={i}
@@ -141,26 +185,36 @@ export default function CrackTheCode() {
           </div>
         </div>
 
-        {/* Player names for couple mode */}
+        {/* Player names */}
         <div className="glass-panel px-4 py-3 mb-6 mx-auto max-w-xs">
           <p className="font-body text-xs text-muted-foreground mb-2">Player Names</p>
           <div className="flex gap-2">
             <input
               value={p1Name}
               onChange={e => setP1Name(e.target.value || "Player 1")}
-              placeholder="Setter"
+              placeholder="Player 1"
               className="flex-1 px-3 py-2 rounded-lg bg-input border border-border text-foreground font-body text-sm text-center focus:outline-none focus:border-accent"
             />
             <input
               value={p2Name}
               onChange={e => setP2Name(e.target.value || "Player 2")}
-              placeholder="Guesser"
+              placeholder="Player 2"
               className="flex-1 px-3 py-2 rounded-lg bg-input border border-border text-foreground font-body text-sm text-center focus:outline-none focus:border-accent"
             />
           </div>
         </div>
 
         <div className="flex flex-col gap-3 items-center">
+          <motion.button
+            whileHover={{ scale: 1.03 }}
+            whileTap={{ scale: 0.97 }}
+            onClick={startMultiplayer}
+            className="w-full max-w-xs flex items-center justify-center gap-3 px-8 py-4 rounded-xl font-display font-bold text-lg bg-destructive text-destructive-foreground neon-glow-pink"
+          >
+            <Swords className="w-5 h-5" />
+            Multiplayer Battle ⚔️
+          </motion.button>
+
           <motion.button
             whileHover={{ scale: 1.03 }}
             whileTap={{ scale: 0.97 }}
