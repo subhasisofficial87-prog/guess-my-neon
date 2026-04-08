@@ -2,7 +2,7 @@ import { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import { Brain, Gamepad2, Zap, Target, TrendingUp, Clock, ChevronDown, Lock, Hash } from "lucide-react";
-import brainLogo from "@/assets/brain-logo.png";
+import Brain3D from "@/components/Brain3D";
 
 const features = [
   {
@@ -67,13 +67,14 @@ export default function Landing() {
           transition={{ duration: 0.8 }}
           className="flex flex-col items-center"
         >
-          <motion.img
-            src={brainLogo}
-            alt="Brain Games logo"
-            className="w-40 h-40 md:w-56 md:h-56 mb-6 drop-shadow-2xl"
-            animate={{ rotate: [0, 2, -2, 0] }}
-            transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
-          />
+          <motion.div
+            initial={{ scale: 0.8, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            transition={{ duration: 1, ease: "easeOut" }}
+            className="mb-6"
+          >
+            <Brain3D />
+          </motion.div>
 
           <h1 className="font-display text-5xl md:text-7xl lg:text-8xl font-black mb-4 tracking-tight">
             <span className="neon-text-cyan">Brain</span>{" "}
