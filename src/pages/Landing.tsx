@@ -118,7 +118,7 @@ export default function Landing() {
                 >
                   {/* Numbers Category */}
                   <button
-                    onClick={() => { setDropdownOpen(false); navigate("/"); }}
+                    onClick={() => { setDropdownOpen(false); navigate("/numbers"); }}
                     className="w-full flex items-center gap-4 px-5 py-4 rounded-xl hover:bg-primary/10 transition-colors text-left group"
                   >
                     <div className="w-12 h-12 rounded-xl bg-primary/20 flex items-center justify-center neon-glow-cyan group-hover:scale-110 transition-transform">
