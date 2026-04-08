@@ -4,7 +4,7 @@ import SettingsModal from "@/components/game/SettingsModal";
 import GameScreen from "@/components/game/GameScreen";
 import CelebrationScreen from "@/components/game/CelebrationScreen";
 import HowToPlayModal from "@/components/game/HowToPlayModal";
-import HighScoresModal from "@/components/game/HighScoresModal";
+
 import MultiplayerSetup from "@/components/game/MultiplayerSetup";
 import MultiplayerGameScreen from "@/components/game/MultiplayerGameScreen";
 import MultiplayerResults from "@/components/game/MultiplayerResults";
@@ -25,7 +25,7 @@ export default function Index() {
   const [screen, setScreen] = useState<Screen>("home");
   const [settingsOpen, setSettingsOpen] = useState(false);
   const [howToPlayOpen, setHowToPlayOpen] = useState(false);
-  const [highScoresOpen, setHighScoresOpen] = useState(false);
+  
   const [settings, setSettings] = useState<GameSettings | null>(null);
   const [secretNumber, setSecretNumber] = useState(0);
   const [winAttempts, setWinAttempts] = useState(0);
@@ -152,7 +152,6 @@ export default function Index() {
           onStart={() => setSettingsOpen(true)}
           onMultiplayer={() => setScreen("mp-setup")}
           onHowToPlay={() => setHowToPlayOpen(true)}
-          onHighScores={() => setHighScoresOpen(true)}
         />
       )}
 
@@ -246,7 +245,7 @@ export default function Index() {
         />
       )}
       <HowToPlayModal open={howToPlayOpen} onClose={() => setHowToPlayOpen(false)} />
-      <HighScoresModal open={highScoresOpen} onClose={() => setHighScoresOpen(false)} />
+      
     </>
   );
 }

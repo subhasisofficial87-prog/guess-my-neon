@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { Play, HelpCircle, Trophy, Users, LogIn, LogOut, User, Lock } from "lucide-react";
+import { Play, HelpCircle, Users, LogIn, LogOut, User, Lock } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
 import { useNavigate } from "react-router-dom";
 
@@ -7,7 +7,6 @@ interface HomeScreenProps {
   onStart: () => void;
   onMultiplayer: () => void;
   onHowToPlay: () => void;
-  onHighScores: () => void;
 }
 
 const FloatingNumber = ({ children, delay, x, y }: { children: string; delay: number; x: string; y: string }) => (
@@ -21,7 +20,7 @@ const FloatingNumber = ({ children, delay, x, y }: { children: string; delay: nu
   </motion.span>
 );
 
-export default function HomeScreen({ onStart, onMultiplayer, onHowToPlay, onHighScores }: HomeScreenProps) {
+export default function HomeScreen({ onStart, onMultiplayer, onHowToPlay }: HomeScreenProps) {
   const { user, displayName, signOut, loading } = useAuth();
   const navigate = useNavigate();
 
@@ -123,20 +122,6 @@ export default function HomeScreen({ onStart, onMultiplayer, onHowToPlay, onHigh
             >
               <HelpCircle className="w-4 h-4" />
               How to Play
-            </motion.button>
-            <motion.button
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              onClick={onHighScores}
-              className="flex flex-col items-center gap-1 px-6 py-3 rounded-xl font-body font-medium bg-muted text-muted-foreground hover:text-foreground transition-colors"
-            >
-              <span className="flex items-center gap-2">
-                <Trophy className="w-4 h-4" />
-                High Scores
-              </span>
-              {!user && (
-                <span className="text-xs text-muted-foreground/60">(Login to save your score)</span>
-              )}
             </motion.button>
           </div>
         </div>
