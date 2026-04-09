@@ -1,7 +1,6 @@
-import { useState, useRef, useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
-import { Brain, Gamepad2, Zap, Target, TrendingUp, Clock, ChevronDown, Lock, Hash } from "lucide-react";
+import { Gamepad2, Zap, Target, TrendingUp, Clock } from "lucide-react";
 import Brain3D from "@/components/Brain3D";
 
 const features = [
@@ -38,18 +37,6 @@ const FloatingShape = ({ delay, x, y, size, color }: { delay: number; x: string;
 
 export default function Landing() {
   const navigate = useNavigate();
-  const [dropdownOpen, setDropdownOpen] = useState(false);
-  const dropdownRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    const handleClick = (e: MouseEvent) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(e.target as Node)) {
-        setDropdownOpen(false);
-      }
-    };
-    document.addEventListener("mousedown", handleClick);
-    return () => document.removeEventListener("mousedown", handleClick);
-  }, []);
 
   return (
     <div className="relative min-h-screen overflow-hidden">
@@ -93,64 +80,15 @@ export default function Landing() {
             Solo challenges, multiplayer battles, and leaderboards — all free, all in your browser. 🧠🔥
           </p>
 
-          {/* Play Games Dropdown */}
-          <div ref={dropdownRef} className="relative">
-            <motion.button
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              onClick={() => setDropdownOpen(!dropdownOpen)}
-              className="flex items-center gap-3 px-12 py-5 rounded-2xl font-display font-bold text-xl bg-primary text-primary-foreground neon-glow-cyan transition-all"
-            >
-              <Gamepad2 className="w-6 h-6" />
-              Play Games
-              <motion.span animate={{ rotate: dropdownOpen ? 180 : 0 }} transition={{ duration: 0.2 }}>
-                <ChevronDown className="w-5 h-5" />
-              </motion.span>
-            </motion.button>
-
-            <AnimatePresence>
-              {dropdownOpen && (
-                <motion.div
-                  initial={{ opacity: 0, y: -10, scaleY: 0.95 }}
-                  animate={{ opacity: 1, y: 0, scaleY: 1 }}
-                  exit={{ opacity: 0, y: -10, scaleY: 0.95 }}
-                  transition={{ duration: 0.2 }}
-                  className="absolute left-1/2 -translate-x-1/2 mt-3 w-80 md:w-96 glass-panel p-2 z-50 origin-top"
-                >
-                  {/* Numbers Category */}
-                  <button
-                    onClick={() => { setDropdownOpen(false); navigate("/numbers"); }}
-                    className="w-full flex items-center gap-4 px-5 py-4 rounded-xl hover:bg-primary/10 transition-colors text-left group"
-                  >
-                    <div className="w-12 h-12 rounded-xl bg-primary/20 flex items-center justify-center neon-glow-cyan group-hover:scale-110 transition-transform">
-                      <Hash className="w-6 h-6 text-primary" />
-                    </div>
-                    <div>
-                      <span className="font-display font-bold text-lg text-foreground block">Numbers</span>
-                      <span className="text-muted-foreground text-sm font-body">Guess numbers & crack codes</span>
-                    </div>
-                    <Zap className="w-5 h-5 text-primary ml-auto opacity-0 group-hover:opacity-100 transition-opacity" />
-                  </button>
-
-                  <div className="mx-3 my-1 border-t border-border/50" />
-
-                  {/* Letters Category */}
-                  <div className="w-full flex items-center gap-4 px-5 py-4 rounded-xl opacity-50 cursor-not-allowed text-left">
-                    <div className="w-12 h-12 rounded-xl bg-secondary/20 flex items-center justify-center">
-                      <span className="font-display text-xl text-secondary">A</span>
-                    </div>
-                    <div>
-                      <span className="font-display font-bold text-lg text-foreground block">Letters</span>
-                      <span className="text-muted-foreground text-sm font-body flex items-center gap-1.5">
-                        <Lock className="w-3.5 h-3.5" />
-                        Coming Soon
-                      </span>
-                    </div>
-                  </div>
-                </motion.div>
-              )}
-            </AnimatePresence>
-          </div>
+          <motion.button
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            onClick={() => navigate("/numbers")}
+            className="flex items-center gap-3 px-12 py-5 rounded-2xl font-display font-bold text-xl bg-primary text-primary-foreground neon-glow-cyan transition-all"
+          >
+            <Gamepad2 className="w-6 h-6" />
+            Play Games
+          </motion.button>
         </motion.div>
       </section>
 
