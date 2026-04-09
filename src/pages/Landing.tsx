@@ -1,7 +1,6 @@
-import { useState, useRef, useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
-import { Brain, Gamepad2, Zap, Target, TrendingUp, Clock, ChevronDown, Lock, Hash } from "lucide-react";
+import { Gamepad2, Zap, Target, TrendingUp, Clock } from "lucide-react";
 import Brain3D from "@/components/Brain3D";
 
 const features = [
