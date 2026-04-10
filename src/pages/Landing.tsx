@@ -67,7 +67,6 @@ export default function Landing() {
             <span className="neon-text-cyan">Quiz It Now</span>{" "}
             <span className="neon-text-pink">Number Games</span>
           </h1>
-          </h1>
 
           <p className="text-muted-foreground text-lg md:text-xl max-w-2xl mb-4 font-body leading-relaxed">
             Exercise your brain with fun, addictive challenges designed to boost your
