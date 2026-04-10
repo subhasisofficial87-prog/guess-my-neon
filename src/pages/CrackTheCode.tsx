@@ -7,6 +7,7 @@ import CTCSetCode from "@/components/crackthecode/CTCSetCode";
 import CTCPassPhone from "@/components/crackthecode/CTCPassPhone";
 import CTCMultiplayerGame from "@/components/crackthecode/CTCMultiplayerGame";
 import { useNavigate } from "react-router-dom";
+import HowToPlayModal from "@/components/game/HowToPlayModal";
 
 type Screen =
   | "menu"
