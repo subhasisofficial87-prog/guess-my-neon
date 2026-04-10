@@ -237,16 +237,45 @@ export default function CrackTheCode() {
             Solo vs AI 🤖
           </motion.button>
 
+          <div className="flex gap-3 mt-2">
+            <motion.button
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              onClick={() => setHowToPlayOpen(true)}
+              className="flex items-center gap-2 px-6 py-3 rounded-xl font-body font-medium bg-muted text-muted-foreground hover:text-foreground transition-colors"
+            >
+              <HelpCircle className="w-4 h-4" />
+              How to Play
+            </motion.button>
+          </div>
+
           <motion.button
             whileTap={{ scale: 0.95 }}
             onClick={() => navigate("/")}
-            className="flex items-center gap-2 mt-4 px-6 py-3 rounded-xl font-body text-muted-foreground hover:text-foreground transition-colors"
+            className="flex items-center gap-2 mt-2 px-6 py-3 rounded-xl font-body text-muted-foreground hover:text-foreground transition-colors"
           >
             <Home className="w-4 h-4" />
             Back to Games
           </motion.button>
         </div>
       </motion.div>
+
+      <HowToPlayModal
+        open={howToPlayOpen}
+        onClose={() => setHowToPlayOpen(false)}
+        title="How to Play"
+        accentColor="hsl(320, 100%, 70%)"
+        shortDescription="Crack the Code is a digit-guessing puzzle inspired by the viral couple challenge! Set or receive a secret code, then guess it digit by digit using positional feedback. Play solo against the AI, challenge your partner, or battle a friend!"
+        steps={[
+          "Choose a game mode: Solo vs AI (the computer picks a code), Couple Challenge (one player sets a code for the other), or Multiplayer Battle (both players set codes and race to crack each other's).",
+          "Select your code length (4 to 8 digits). Longer codes = harder challenge!",
+          "Enter your guess using the number pad. Each digit can be 0–9.",
+          "After submitting, you'll see feedback for each position: 🟢 green means correct digit in the correct spot, 🔴 red means wrong digit.",
+          "Use the feedback to refine your next guess. Focus on locking in the green positions and changing the red ones.",
+          "Keep guessing until you crack the full code! In Multiplayer Battle, players alternate turns — the first to crack the opponent's code wins.",
+          "Reactions pop up as you play — celebrate correct positions and laugh off the misses! 🎉",
+        ]}
+      />
     </div>
   );
 }
