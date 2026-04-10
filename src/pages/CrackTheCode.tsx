@@ -1,6 +1,6 @@
 import { useState, useCallback } from "react";
 import { motion } from "framer-motion";
-import { Cpu, Users, Swords, Home, ChevronLeft, ChevronRight } from "lucide-react";
+import { Cpu, Users, Swords, Home, ChevronLeft, ChevronRight, HelpCircle } from "lucide-react";
 import { generateCode } from "@/lib/crackTheCode";
 import CTCGamePlay from "@/components/crackthecode/CTCGamePlay";
 import CTCSetCode from "@/components/crackthecode/CTCSetCode";
@@ -30,6 +30,7 @@ export default function CrackTheCode() {
   const [p2Code, setP2Code] = useState<number[]>([]);
   const [p1Name, setP1Name] = useState("Player 1");
   const [p2Name, setP2Name] = useState("Player 2");
+  const [howToPlayOpen, setHowToPlayOpen] = useState(false);
 
   const startSolo = useCallback(() => {
     setSecretCode(generateCode(codeLength));
