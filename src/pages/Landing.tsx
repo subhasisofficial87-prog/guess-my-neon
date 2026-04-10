@@ -64,8 +64,8 @@ export default function Landing() {
           </motion.div>
 
           <h1 className="font-display text-5xl md:text-7xl lg:text-8xl font-black mb-4 tracking-tight">
-            <span className="neon-text-cyan">Brain</span>{" "}
-            <span className="neon-text-pink">Games</span>
+            <span className="neon-text-cyan">Quiz It Now</span>{" "}
+            <span className="neon-text-pink">Number Games</span>
           </h1>
 
           <p className="text-muted-foreground text-lg md:text-xl max-w-2xl mb-4 font-body leading-relaxed">
@@ -100,7 +100,7 @@ export default function Landing() {
           viewport={{ once: true }}
           className="font-display text-3xl md:text-4xl font-bold text-center mb-14 neon-text-cyan"
         >
-          Why Brain Games?
+          Why Quiz It Now?
         </motion.h2>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -126,7 +126,7 @@ export default function Landing() {
       {/* Footer */}
       <footer className="relative z-10 border-t border-border/30 py-8 text-center">
         <p className="text-muted-foreground/50 text-sm font-body">
-          © {new Date().getFullYear()} Brain Games — Train your brain, one game at a time. 🧠
+          © {new Date().getFullYear()} Quiz It Now — Train your brain, one game at a time. 🧠
         </p>
       </footer>
     </div>
