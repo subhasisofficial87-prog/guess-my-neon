@@ -4,9 +4,13 @@ import { X } from "lucide-react";
 interface HowToPlayModalProps {
   open: boolean;
   onClose: () => void;
+  title?: string;
+  shortDescription: string;
+  steps: string[];
+  accentColor?: string;
 }
 
-export default function HowToPlayModal({ open, onClose }: HowToPlayModalProps) {
+export default function HowToPlayModal({ open, onClose, title = "How to Play", shortDescription, steps, accentColor }: HowToPlayModalProps) {
   return (
     <AnimatePresence>
       {open && (
@@ -22,32 +26,36 @@ export default function HowToPlayModal({ open, onClose }: HowToPlayModalProps) {
             animate={{ scale: 1, opacity: 1 }}
             exit={{ scale: 0.9, opacity: 0 }}
             onClick={(e) => e.stopPropagation()}
-            className="glass-panel neon-border p-6 md:p-8 w-full max-w-md"
+            className="glass-panel neon-border p-6 md:p-8 w-full max-w-md max-h-[85vh] overflow-y-auto"
           >
-            <div className="flex justify-between items-center mb-6">
-              <h2 className="font-display text-xl font-bold neon-text-cyan">How to Play</h2>
+            <div className="flex justify-between items-center mb-4">
+              <h2 className="font-display text-xl font-bold" style={accentColor ? { color: accentColor, textShadow: `0 0 15px ${accentColor}50` } : undefined}>
+                {!accentColor && <span className="neon-text-cyan">{title}</span>}
+                {accentColor && title}
+              </h2>
               <button onClick={onClose} className="text-muted-foreground hover:text-foreground">
                 <X className="w-5 h-5" />
               </button>
             </div>
-            <div className="space-y-4 font-body text-foreground/80">
-              <div className="flex gap-3">
-                <span className="font-display text-primary font-bold">1.</span>
-                <p>Choose a difficulty level — this sets the range of numbers.</p>
-              </div>
-              <div className="flex gap-3">
-                <span className="font-display text-primary font-bold">2.</span>
-                <p>The AI picks a secret number within the range.</p>
-              </div>
-              <div className="flex gap-3">
-                <span className="font-display text-primary font-bold">3.</span>
-                <p>Enter your guess. You'll be told if it's <span className="text-guess-low font-semibold">too low</span> or <span className="text-guess-high font-semibold">too high</span>.</p>
-              </div>
-              <div className="flex gap-3">
-                <span className="font-display text-primary font-bold">4.</span>
-                <p>Keep guessing until you find the number. Fewer attempts = better score!</p>
-              </div>
+
+            {/* Short description */}
+            <p className="font-body text-foreground/90 text-sm leading-relaxed mb-5 px-1">
+              {shortDescription}
+            </p>
+
+            <div className="w-full h-px bg-border mb-5" />
+
+            {/* Step-by-step */}
+            <h3 className="font-display text-sm font-bold text-muted-foreground uppercase tracking-wider mb-3">Step by Step</h3>
+            <div className="space-y-3 font-body text-foreground/80">
+              {steps.map((step, i) => (
+                <div key={i} className="flex gap-3">
+                  <span className="font-display font-bold shrink-0" style={{ color: accentColor || "hsl(var(--primary))" }}>{i + 1}.</span>
+                  <p className="text-sm leading-relaxed">{step}</p>
+                </div>
+              ))}
             </div>
+
             <button
               onClick={onClose}
               className="w-full mt-6 py-3 rounded-xl font-display font-bold bg-muted text-foreground hover:bg-muted/80 transition-colors"

@@ -244,7 +244,19 @@ export default function Index() {
           onStart={startGame}
         />
       )}
-      <HowToPlayModal open={howToPlayOpen} onClose={() => setHowToPlayOpen(false)} />
+      <HowToPlayModal
+        open={howToPlayOpen}
+        onClose={() => setHowToPlayOpen(false)}
+        shortDescription="A thrilling number guessing game! Pick a difficulty, and try to figure out the secret number using hints. Play solo against the AI or challenge a friend in 2-player mode — fewest guesses wins!"
+        steps={[
+          "Choose a difficulty level — this sets the range of numbers (e.g. 1–50, 1–100, or 1–1000).",
+          "The AI picks a secret number within that range. Your job is to guess it!",
+          "Type in your guess and submit. You'll be told if the secret number is higher or lower than your guess.",
+          "Use the hints to narrow down your next guess. Think strategically — try the middle of the remaining range!",
+          "Keep guessing until you crack it. The fewer attempts you use, the better your score.",
+          "In 2-Player Mode, both players guess the same (or each other's) secret number. The player who finds it in fewer attempts wins!",
+        ]}
+      />
       
     </>
   );
