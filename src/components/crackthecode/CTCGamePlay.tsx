@@ -102,7 +102,7 @@ export default function CTCGamePlay({ secretCode, codeLength, playerName, onHome
       </div>
 
       {/* Number pad */}
-      <div className="mb-6">
+      <div className="mb-6 w-full max-w-md">
         <NumberPad
           onDigit={handleDigit}
           onDelete={handleDelete}
